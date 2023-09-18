@@ -33,7 +33,7 @@ let update = async(req,res)=>{
    }else{res.send(helper.formatMsg(0,"Category not found"))}
 }
 let getAll = async(req,res)=>{
-    let result = await (await CatDb.find().populate({path:'subcats',populate:{path:'childCat'}}))
+    let result =  await CatDb.find()
     res.send(result)
 }
 module.exports = {
