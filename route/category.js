@@ -1,7 +1,7 @@
-const router = require('express-promise-router')()
+const Router = require('express-promise-router')()
 const controller = require('../controllers/category')
-router.post('/create',controller.create)
-router.get('/all',controller.all)
-router.patch('/:id',controller.update)
-
-module.exports = router
+Router. post ('/create',controller.create)
+Router.get('/all',controller.getAll)
+Router.patch('/:id',controller.update)
+Router.delete('/:id',controller.removeCatById)
+module.exports = Router

@@ -33,11 +33,19 @@ let update = async(req,res)=>{
    }else{res.send(helper.formatMsg(0,"Category not found"))}
 }
 let getAll = async(req,res)=>{
-    let result =  await CatDb.find()
+    let result =  await CatDb.find({'deletestatus':false})
     res.send(result)
+}
+
+let removeCatById = async(req,res)=>{
+    let cat = await CatDb.findById(req.params.id)
+    if(cat){
+      await CatDb.findByIdAndUpdate(cat.id,{'deletestatus':true})
+    }
 }
 module.exports = {
     create,
     getAll,
-    update
+    update,
+    removeCatById
 }
