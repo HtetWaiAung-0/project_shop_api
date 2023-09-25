@@ -10,6 +10,9 @@ module.exports = {
         login: Joi.object({
             email: Joi.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/).required(),
             password: Joi.string().min(6).max(20).required()
+        }),
+        address: Joi.object({
+            phoneNo: Joi.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/).required()
         })
     }
 };
