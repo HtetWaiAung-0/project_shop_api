@@ -13,7 +13,6 @@ app.use(fileupload())
 app.use('/gallery',express.static(path.join(__dirname,'gallery')))
 
 app.use(express.json())
-<<<<<<< HEAD
 app.use('/category',categoryRoute)
 app.use('/subcategory',subcategoryRoute)
 //Global Error Handling
@@ -24,11 +23,5 @@ app.use((err, req, res, next) => {
       error: err.message,
     });
   });
-=======
-// app.use('/category',categoryRoute)
-// app.use('/subcategory',subcategoryRoute)
 app.use('/user',userRoute)
-
-
->>>>>>> refs/remotes/origin/main
 app.listen(process.env.PORT,()=> console.log(`Server is running at ${process.env.PORT}`))
