@@ -13,4 +13,12 @@ app.use('/gallery',express.static(path.join(__dirname,'gallery')))
 app.use(express.json())
 app.use('/category',categoryRoute)
 app.use('/subcategory',subcategoryRoute)
+//Global Error Handling
+app.use((err, req, res, next) => {
+    console.error(err.message); // Log the error
+  
+    res.status(500).json({
+      error: err.message,
+    });
+  });
 app.listen(process.env.PORT,()=> console.log(`Server is running at ${process.env.PORT}`))
