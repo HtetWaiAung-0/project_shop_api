@@ -1,27 +1,29 @@
 require('dotenv').config()
 const express = require('express')
-
-// const categoryRoute = require('./route/category')
-// const subcategoryRoute = require('./route/subcategory')
+const helper = require('./utils/helper')
+const categoryRoute = require('./route/category')
+const subcategoryRoute = require('./route/subcategory')
 const userRoute = require('./route/user')
-const path = require('path')
-const fileupload = require('express-fileupload')
-const app = express()
-const mongoose = require('mongoose')
-mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB}`)
-app.use(fileupload())
-app.use('/gallery',express.static(path.join(__dirname,'gallery')))
 
-app.use(express.json())
+const path = require('path')//open path for fileupload
+const fileupload = require('express-fileupload')//instant of fileupload lib
+const app = express()//run express server
+const mongoose = require('mongoose')//instant of mongodb
+mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB}`)//build mondb in your device
+app.use(fileupload())//run fileuoload function in your app
+app.use('/gallery',express.static(path.join(__dirname,'gallery')))//specified the path to store the image
+
+app.use(express.json())//run express.json in your app to use josn
 app.use('/category',categoryRoute)
 app.use('/subcategory',subcategoryRoute)
-//Global Error Handling
-app.use((err, req, res, next) => {
-    console.error(err.message); // Log the error
-  
-    res.status(500).json({
-      error: err.message,
-    });
-  });
 app.use('/user',userRoute)
+//Global Error Handling
+
+
 app.listen(process.env.PORT,()=> console.log(`Server is running at ${process.env.PORT}`))
+
+app.use((err, req, res, next) => {
+  if(err){
+    res.status(500).json(helper.formatMsg(0,err.message))
+  }
+});

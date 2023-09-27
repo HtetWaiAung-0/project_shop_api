@@ -7,7 +7,7 @@ const SubCatModel = new Schema({
     childCat : [{type:Schema.Types.ObjectId,ref:'childcategory'}],
     created:{type:Date,default:Date.now()},
     updated:{type:Date,default:Date.now()},
-    deletestatus:{type:Boolean,default:true}
+    deletestatus:{type:Boolean,default:false}
 })
 const SubCategory = mongoose.model('subcategory',SubCatModel)
 module.exports = SubCategory
