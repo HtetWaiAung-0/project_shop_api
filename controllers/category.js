@@ -39,8 +39,11 @@ let getAll = async(req,res)=>{
 
 let removeCatById = async(req,res)=>{
     let cat = await CatDb.findById(req.params.id)
-    if(cat){
-      await CatDb.findByIdAndUpdate(cat.id,{'deletestatus':true})
+    if(cat.deletestatus){
+     res.status(203).json(helper.formatMsg(0,'Cat not found'))
+    }else{
+        let result =  await CatDb.findByIdAndUpdate(cat.id,{'deletestatus':true})
+     res.status(200).json(helper.formatMsg(1,`'${result.name}' is deleted`))
     }
 }
 module.exports = {

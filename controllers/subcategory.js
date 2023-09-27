@@ -3,11 +3,7 @@ const catgoryDb = require('../models/category')
 const helper = require('../utils/helper')
 
 let create = async(req,res)=>{
-    //check file is attach in req
-    if(req.files){
-        let path = `./gallery/${req.body.name}.png`//specified directory to store photo
-        req.body.image = `http://localhost:3000/gallery/${req.body.name}.png`//spicified url 
-        req.files.photo.mv(path)//store photo file to the specified directory
+    
         req.body.category = req.params.id //add category in the req.body
         let result = await subcategoryDb(req.body).save()//saving req.body to Db
         //saveing new subcat id to the subcats of category Db
@@ -17,34 +13,34 @@ let create = async(req,res)=>{
         await catgoryDb.findByIdAndUpdate(req.params.id,{"subcats":subcats})
         
         res.send({'result':result})//send res to user
-    }else{
-        res.send({result:'photo is require'})
-    }
 }
-let update = async(req,res,next)=>{
-    //checking req.params.id is exiting in subcatDb
+let update = async(req,res)=>{
+    await subcategoryDb.findByIdAndUpdate(req.params.id,req.body)
     let subcat = await subcategoryDb.findById(req.params.id)
-    if(subcat){
-        if(req.files){
-            if(req.body.name){
-                helper.savePhoto(req,req.body.name)
-                await subcategoryDb.findByIdAndUpdate(subcat.id,req.body)
-                res.status(200).json(helper.formatMsg(1,'Successfully updated'))
-            }else{
-               console.log(subcat.name)
-               helper.savePhoto(req,subcat.name)
-               await subcategoryDb.findByIdAndUpdate(subcat.id,req.body)
-               res.status(200).json(helper.formatMsg(1,'Successfully updated'))
-            }
-        }else{
-            await subcategoryDb.findByIdAndUpdate(subcat.id,req.body)
-            res.status(200).json(helper.formatMsg(1,'Successfully updated'))
-        }
-    }else{
-        res.status(230).json(helper.formatMsg(0,'Subcategory not found'))
+    res.status(200).json(helper.formatMsg(1,'Successfully updated',subcat))
     }
+let remove = async(req,res)=>{
+   let subCat = await subcategoryDb.findById(req.params.id)
+   if(subCat.deletestatus){
+    res.status(203).json(helper.formatMsg(0,'not found subcat'))
+   }else{
+    let result =  await subcategoryDb.findByIdAndUpdate(req.params.id,{'deletestatus':true})
+   res.status(200).json(helper.formatMsg(1,`'${result.name}' is deleted`))
+   }
+}
+let getAll = async(req,res)=>{
+    let subcats = await subcategoryDb.find({'deletestatus':false})
+    let results = []
+    subcats.forEach(subcat => {
+        var result = subcat.toObject()
+        delete result.deletestatus
+        results.push(result)
+    });
+    res.status(200).json(helper.formatMsg(1,'All SubCat',results))
 }
 module.exports = {
     create,
-    update
+    update,
+    remove,
+    getAll
 }

@@ -6,13 +6,12 @@ let formatMsg = (con,msg,result)=>{
     }
 
 }
-let savePhoto = (req,name)=>{
-    let path = `./gallerys/${name}.png`
-    req.body.image = `http://localhost:3000/gallery/${name}.png`
-    req.files.photo.mv(path,(err)=> {throw new Error('photo uploading failed')})
+     
+
+  
     
-}
+
 module.exports = {
     formatMsg,
-    savePhoto
+    
 }
