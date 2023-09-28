@@ -32,9 +32,12 @@ let update = async(req,res)=>{
     }
    }else{res.send(helper.formatMsg(0,"Category not found"))}
 }
-let getAll = async(req,res)=>{
-    let result =  await CatDb.find({'deletestatus':false})
-    res.send(result)
+let paginate = async(req,res)=>{
+    let page = parseInt(req.query.page)
+    let limit = parseInt(req.query.limit)
+    let skip = (page-1) * limit
+    let result =  await CatDb.find({'deletestatus':false}).skip(skip).limit(limit)
+    res.status(200).json(helper.formatMsg(1,'Success',result))
 }
 
 let removeCatById = async(req,res)=>{
@@ -48,7 +51,7 @@ let removeCatById = async(req,res)=>{
 }
 module.exports = {
     create,
-    getAll,
+    paginate,
     update,
     removeCatById
 }

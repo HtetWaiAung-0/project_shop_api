@@ -6,7 +6,6 @@ module.exports = {
             if(!result.error){
                 return next()
             }else{
-                console.log(result.error)
                 throw new Error("Validate Fail")
                 
             } 
@@ -25,7 +24,7 @@ module.exports = {
             let result = await db.findById(req.params.id)
             if(result)next();
             else {
-                res.status(203).json(helper.formatMsg(0,'ID not found'))
+                throw new Error('Id not found')
             }
         }
     },
@@ -35,14 +34,11 @@ module.exports = {
                 let fileName = `${Date.now()}${req.files.photo.name}`;
                 let path = `./gallery/${fileName}`
                 req.body.image = `http://localhost:3000/gallerys/${fileName}`
-               req.files.photo.mv(path,err=>{
+               req.files.photo.mv(path, err =>{
                     if(err){
                         res.status(500).json(helper.formatMsg(0,err.message))
                     }
                     else next()})
-                
-                    
-                
             }else {
                 res.status(400).json(helper.formatMsg(0,'photo is required for this function'))
             };
