@@ -14,14 +14,18 @@ module.exports = {
         address: Joi.object({
             phoneNo: Joi.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/).required()
         }),
-        subCat:Joi.object({
+        allTypeOfCAt:Joi.object({
             name:Joi.string().min(3).max(100).required(),
             
         }),
+    product: Joi.object({
+        name:Joi.string().min(3).max(100).required(),
+        price:Joi.string().max(10).required()
+    }),   
 
     Gschema: {
         id: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
-        // skip: Joi.string().required()
+        skip: Joi.string().required()
     }
 }
 

@@ -7,7 +7,7 @@ const ChildCatModel = new Schema({
     products : [{type:Schema.Types.ObjectId,ref:'product'}],
     created:{type:Date,default:Date.now()},
     updated:{type:Date,default:Date.now()},
-    deletestatus:{type:Boolean,required:true}
+    deletestatus:{type:Boolean,default:false}
 })
 const ChildCategory = mongoose.model('childcategory',ChildCatModel)
 module.exports = ChildCategory
