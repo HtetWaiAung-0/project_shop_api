@@ -6,7 +6,7 @@ const ProductModel = new Schema({
     image:[{type:String,required:true}],
     price:{type:Number,required:true},
     specs:[{type:Schema.Types.ObjectId}],
-    deletestatus:{type:Boolean,required:true},
+    deletestatus:{type:Boolean,default:false},
     created:{type:Date,default:Date.now()},
     updated:{type:Date,default:Date.now()},
 })

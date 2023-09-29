@@ -4,7 +4,7 @@ const SpecModel = mongoose.Schema({
     size:{type:String,required:true},
     quantity:{type:Number,required:true},
     product:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'product'},
-    deletestatus:{type:Boolean,required:true},
+    deletestatus:{type:Boolean,default:false},
     created:{type:Date,default:Date.now()},
     updated:{type:Date,default:Date.now()},
 })
