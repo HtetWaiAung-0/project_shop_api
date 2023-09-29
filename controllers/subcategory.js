@@ -12,7 +12,7 @@ let create = async(req,res)=>{
         subcats.push(result.id)
         await catgoryDb.findByIdAndUpdate(req.params.id,{"subcats":subcats})
         
-        res.send({'result':result})//send res to user
+        res.status(200).json(helper.formatMsg(1,"Successfully created",result))//send res to user
 }
 let update = async(req,res)=>{
     await subcategoryDb.findByIdAndUpdate(req.params.id,req.body)
