@@ -12,7 +12,10 @@ router.get('/search',controller.paginate)
 router.post('/create/:id',
 [
     validateParam(Schemas.Gschema.id,'id'),
-    validateBody()
-])
+    isExitId(childcatDb),
+    validateBody(Schemas.product),
+],
+controller.create
+)
 
 module.exports = router;

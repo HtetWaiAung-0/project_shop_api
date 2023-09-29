@@ -18,7 +18,10 @@ module.exports = {
             name:Joi.string().min(3).max(100).required(),
             
         }),
-        
+    product: Joi.object({
+        name:Joi.string().min(3).max(100).required(),
+        price:Joi.string().max(10).required()
+    }),   
 
     Gschema: {
         id: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),

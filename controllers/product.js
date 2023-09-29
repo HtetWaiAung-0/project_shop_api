@@ -1,18 +1,37 @@
 const productDb = require('../models/product')
-const childcatDb = require('../models/childcategory')
+const childcatDb = require('../models/childcategory');
+const helper = require('../utils/helper');
 
 let create = async(req,res)=>{
-    req.body.childCat = req.params.id;
-    let product = await productDb(req.body).save()
-    let result = product.toObject()
-    delete result.deletestatus
-    let childcat = await childcatDb.findById(req.params.id)
-    let products = childcat.products
-    products.push(result.id)
-    await subcatDb.findByIdAndUpdate(req.params.id,{"products":products})
-    res.status(200).json(helper.formatMsg(1,"Success",result))
-}
+    if(!req.files){
+        res.status(400).json(helper.formatMsg(0,'photos are required.'))
+    }else{
+        let album = []
+        for (const key in req.files) {
+            const photo = req.files[key];
+            const savePath = `./gallery/product/${Date.now()}${photo.name}`;
+            const image = `http://localhost:3000/gallery/product/${Date.now()}${photo.name}`
+            
+            photo.mv(savePath, (err) => {
+              if (err) {
+                return res.status(500).json(helper.formatMsg(0,err.message));
+              }else{ 
+                album.push(image)
+              }
+            });
+          };
+          req.body.childCat = req.params.id;
+          req.body.images = album;
+          req.body.price = parseInt(req.body.price);
 
+          let result = await productDb(req.body).save();
+          res.status(200).json(helper.formatMsg(1,'Success',result))
+        
+          
+        }
+        
+    }
+    
 let update = async(req,res)=>{
     await productDb.findByIdAndUpdate(req.params.id,req.body)
     let product = await productDb.findById(req.params.id)
