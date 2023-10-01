@@ -9,7 +9,7 @@ let create =  async(req,res)=>{
 }
 let update = async(req,res)=>{
     await CatDb.findByIdAndUpdate(req.params.id,req.body)
-    let cat = await subcategoryDb.findById(req.params.id)
+    let cat = await CatDb.findById(req.params.id)
     let result = cat.toObject()
     delete result.deletestatus
     res.status(200).json(helper.formatMsg(1,'Success',result))
